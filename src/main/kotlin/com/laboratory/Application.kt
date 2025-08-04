@@ -1,11 +1,10 @@
 package com.laboratory
 
 import com.laboratory.config.AppConfig
-import com.laboratory.model.Cat
-import com.laboratory.model.Dolphin
-import com.laboratory.model.Frog
-import com.laboratory.model.Parrot
+import com.laboratory.model.*
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
+import java.util.function.Supplier
+
 
 fun main() {
 
@@ -34,10 +33,19 @@ fun main() {
 
     val frog2 = context.getBean(Frog::class.java)
 
+    // adding beans with stereotypes annotation to the Spring context
     // get Dolphin bean by type
     val dolphin = context.getBean(Dolphin::class.java)
     println("${dolphin.getName()} say hello")
 
-    context.beanDefinitionNames.forEach { println(it) }
+    // programmatically adding beans to the Spring context
+
+    val tiger = Tiger("Tiger")
+    val tigerSupplier: Supplier<Tiger?> = Supplier { tiger }
+    context.registerBean("tiger1", Tiger::class.java, tigerSupplier)
+
+    println("* Show all beans:")
+
+    context.beanDefinitionNames.forEach { println("  $it") }
 
 }
