@@ -2,6 +2,7 @@ package com.laboratory
 
 import com.laboratory.config.AppConfig
 import com.laboratory.model.*
+import org.springframework.beans.factory.config.BeanDefinitionCustomizer
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.util.function.Supplier
 
@@ -34,6 +35,7 @@ fun main() {
     val frog2 = context.getBean(Frog::class.java)
 
     // adding beans with stereotypes annotation to the Spring context
+
     // get Dolphin bean by type
     val dolphin = context.getBean(Dolphin::class.java)
     println("${dolphin.getName()} say hello")
@@ -42,7 +44,10 @@ fun main() {
 
     val tiger = Tiger("Tiger")
     val tigerSupplier: Supplier<Tiger?> = Supplier { tiger }
-    context.registerBean("tiger1", Tiger::class.java, tigerSupplier)
+    context.registerBean("tiger1", Tiger::class.java, tigerSupplier, BeanDefinitionCustomizer { bd -> bd.isPrimary = true })
+
+    val receivedTiger = context.getBean("tiger1", Tiger::class.java)
+    println("Received tiger: ${receivedTiger.name} say hello")
 
     println("* Show all beans:")
 
