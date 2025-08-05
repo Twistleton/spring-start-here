@@ -3,6 +3,7 @@ package com.laboratory
 import com.laboratory.config.AppConfig
 import com.laboratory.model.*
 import org.springframework.beans.factory.config.BeanDefinitionCustomizer
+import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.util.function.Supplier
 
@@ -52,5 +53,21 @@ fun main() {
     println("* Show all beans:")
 
     context.beanDefinitionNames.forEach { println("  $it") }
+
+    val factory = context.autowireCapableBeanFactory as BeanDefinitionRegistry?
+
+    factory?.let {
+        it.removeBeanDefinition("tiger1")
+        println("Removed bean definition for tiger1")
+    }
+
+    context.beanDefinitionNames.forEach { println("  $it") }
+
+    val cowboy = context.getBean("cowboy", Cowboy::class.java)
+
+    val name = cowboy.name
+
+    println("${cowboy.name} horse is ${cowboy.getHorse()?.name}")
+
 
 }
