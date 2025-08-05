@@ -63,11 +63,12 @@ fun main() {
 
     context.beanDefinitionNames.forEach { println("  $it") }
 
+    // wiring the beans using the @Bean annotated method’s parameters
     val cowboy = context.getBean("cowboy", Cowboy::class.java)
+    println("${cowboy.name}'s horse is ${cowboy.getHorse()?.name}")
 
-    val name = cowboy.name
-
-    println("${cowboy.name} horse is ${cowboy.getHorse()?.name}")
-
+    // using @Qualifier annotation
+    val dogOwner = context.getBean("dogOwner", DogOwner::class.java)
+    println("${dogOwner.name}'s dog is ${dogOwner.getDog()?.name}")
 
 }
